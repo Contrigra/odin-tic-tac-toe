@@ -1,7 +1,13 @@
-const buttonContainer = document.querySelector('.button-container')
+const buttonContainer = document.querySelector('.button-container');
+const resetButton = document.querySelector('.button-reset-game');
+
 window.onload = () => {
     screenController.updateScreen();
 }
+resetButton.addEventListener('click', () => {
+    gameController.resetGame()
+    screenController.updateScreen()
+});
 
 const screenController = function () {
     const renderManyButtons = () => {
@@ -39,7 +45,6 @@ const gameController = function () {
 }();
 
 
-// arrow functions have no this
 
 console.log(gameController.gameBoard)
 // console.log(gameController.resetGame())
