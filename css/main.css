@@ -16,10 +16,14 @@ body {
   grid-template-columns: repeat(3, 104px);
   grid-gap: 8px;
   justify-items: center;
-  margin: 64px 0;
+  margin: 64px 0 32px;
 }
 
 .button-pad {
   height: 104px;
   width: 104px;
+}
+
+.player-container {
+  margin: 0 0 24px;
 }
