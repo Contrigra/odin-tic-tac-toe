@@ -1,0 +1,18 @@
+* {
+  font-family: 'Helvetica', sans-serif;
+}
+
+
+body {
+  margin: auto;
+}
+
+.button-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.button-pad {
+  max-width: 30px;
+}
