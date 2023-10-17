@@ -22,39 +22,44 @@ const screenController = function () {
         gameButton.textContent = buttonValue;
         gameButton.setAttribute(`data-value`, `${buttonValue}`);
         gameButton.setAttribute(`data-index`, `${buttonIndex}`);
-
+        gameButton.addEventListener('click', () => {
+            if (!gameController.checkVictor()) {
+                gameController.changePlayer();
+                screenController.updatePlayer();
+            }
+        })
         gameButton.classList.add('button-pad')
         buttonContainer.appendChild(gameButton);
     }
     const updatePlayer = () => {
         currentContainerSpan.textContent = gameController.currentPlayer
-
     }
+
     const updateScreen = () => {
         renderManyButtons();
         updatePlayer();
     }
-    return {updateScreen};
+    return {updateScreen, updatePlayer};
 }();
-const gameController = function () {
-    const gameBoard =
-        ['x', 'x', 'o',
-            'x', 'o', 'o',
-            'o', 'x', 'x'];
 
-    const currentPlayer = 'X'
+const gameController = function () {
+    const gameBoard = ['X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'X'];
+    const currentPlayer = 'X';
 
     function resetGame() {
-        this.gameBoard = ['', '', '',
-            '', '', '',
-            '', '', '']
+        this.gameBoard = ['', '', '', '', '', '', '', '', '']
+    }
+
+    function checkVictor() {
+        // TODO check for the victor functionality. Need to analyze the array
+        return false
     }
 
     function changePlayer() {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     }
 
-    return {gameBoard, resetGame, currentPlayer, changePlayer};
+    return {gameBoard, resetGame, currentPlayer, checkVictor, changePlayer};
 }();
 
 /* TODO
@@ -72,6 +77,5 @@ const gameController = function () {
     *
  */
 
-// TODO Possibly change to store only O or X gameController.currentPlayer
 
 
