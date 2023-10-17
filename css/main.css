@@ -27,3 +27,8 @@ body {
 .player-container {
   margin: 0 0 24px;
 }
+
+#current-player {
+  font-size: 18px;
+  font-weight: bolder;
+}
