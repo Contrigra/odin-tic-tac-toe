@@ -1,6 +1,6 @@
 const buttonContainer = document.querySelector('.button-container');
 const resetButton = document.querySelector('.button-reset-game');
-const playerContainer = document.querySelector('.player-container');
+const currentContainerSpan = document.querySelector('#current-player');
 window.onload = () => {
     screenController.updateScreen();
 }
@@ -17,38 +17,32 @@ const screenController = function () {
             renderOneButton(buttonIndex, buttonValue);
         }
     }
-
     const renderOneButton = (buttonIndex, buttonValue) => {
         const gameButton = document.createElement('button');
         gameButton.textContent = buttonValue;
         gameButton.setAttribute(`data-value`, `${buttonValue}`);
-        // TODO save index within the button
         gameButton.setAttribute(`data-index`, `${buttonIndex}`);
 
         gameButton.classList.add('button-pad')
         buttonContainer.appendChild(gameButton);
     }
-
     const updatePlayer = () => {
-        playerContainer.textContent = gameController.currentPlayer
+        currentContainerSpan.textContent = gameController.currentPlayer
 
     }
     const updateScreen = () => {
         renderManyButtons();
         updatePlayer();
     }
-
-
     return {updateScreen};
 }();
-
 const gameController = function () {
     const gameBoard =
         ['x', 'x', 'o',
             'x', 'o', 'o',
             'o', 'x', 'x'];
 
-    const currentPlayer = 'Player X'
+    const currentPlayer = 'X'
 
     function resetGame() {
         this.gameBoard = ['', '', '',
@@ -57,11 +51,10 @@ const gameController = function () {
     }
 
     function changePlayer() {
-        this.currentPlayer = this.currentPlayer === 'Player X' ? 'Player O' : 'Player X';
+        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     }
 
     return {gameBoard, resetGame, currentPlayer, changePlayer};
-
 }();
 
 /* TODO
