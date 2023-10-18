@@ -24,8 +24,8 @@ const screenController = function () {
         gameButton.setAttribute(`data-index`, `${buttonIndex}`);
         gameButton.addEventListener('click', (e) => {
 
-            if (gameController.winner !== true) { // prohibit further clicks if there is the winner declared
-                if (gameController.updateGameBoard(Number(e.currentTarget.dataset.index))) { //check legitimacy
+            if (gameController.winner !== true) { // guard prohibits further clicks if there is the winner declared
+                if (gameController.updateGameBoard(Number(e.currentTarget.dataset.index))) { // guard to check legitimacy
                     if (gameController.checkWinner()) {
                         screenController.updateScreen();
                         screenController.declareWinner();
@@ -67,7 +67,7 @@ const screenController = function () {
         renderManyButtons();
         updatePlayer();
     }
-    return {updateScreen, updatePlayer, declareWinner, declareTie};
+    return {updateScreen, updatePlayer, declareWinner};
 }();
 
 const gameController = function () {
