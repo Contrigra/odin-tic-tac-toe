@@ -4,7 +4,9 @@ Personal project from The Odin Project's Project :)
 
 GitHub pages: https://contrigra.github.io/odin-tic-tac-toe/
 
-The goal was to practice JavaScript, encapsulation, closures and different patterns, such as IIFE, factory functions, module patterns, guards and so on
+The goal was to practice JavaScript, encapsulation, closures and different patterns, such as IIFE, factory functions, module patterns, guards and so on. 
+
+This is the reason why design is so utilitiarian 
 
 I did not make a tie check functionality, as I concluded it wouldn't teach me anything new from this exercise. So, kinda practicing the cult of done.  
 
