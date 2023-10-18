@@ -22,69 +22,97 @@ const screenController = function () {
         gameButton.textContent = buttonValue;
         gameButton.setAttribute(`data-value`, `${buttonValue}`);
         gameButton.setAttribute(`data-index`, `${buttonIndex}`);
-        gameButton.addEventListener('click', () => {
-            if (gameController.checkWinner()) {
-                screenController.declareWinner()
-            } else {
-                gameController.changePlayer();
-                screenController.updatePlayer();
+        gameButton.addEventListener('click', (e) => {
+
+            if (gameController.winner !== true) {
+                gameController.updateGameBoard(Number(e.currentTarget.dataset.index));
+                if (gameController.checkWinner()) {
+                    screenController.updateScreen();
+                    screenController.declareWinner();
+                } else {
+                    gameController.changePlayer();
+                    screenController.updatePlayer();
+                    screenController.updateScreen();
+                }
             }
         })
         gameButton.classList.add('button-pad')
         buttonContainer.appendChild(gameButton);
     }
-    const updatePlayer = () => {
-        currentContainerSpan.textContent = gameController.currentPlayer
-    }
 
     function declareWinner() {
-        // TODO create a new div and declare a winner
+        const winnerDiv = document.createElement('div');
+        winnerDiv.textContent = `the winner is ${gameController.currentPlayer}`;
+        currentContainerSpan.textContent = `${gameController.currentPlayer} is the winner! `;
     }
 
+    const updatePlayer = () => {
+        currentContainerSpan.textContent = gameController.currentPlayer
+
+    }
     const updateScreen = () => {
         renderManyButtons();
         updatePlayer();
     }
-    return {updateScreen, updatePlayer, declareWinner: declareWinner};
+    return {updateScreen, updatePlayer, declareWinner};
 }();
 
 const gameController = function () {
-    const gameBoard =
-        ['X', 'X', 'O',
-            'O', 'O', 'O',
-            'O', 'O', 'X'];
+    const gameBoard = ['', '', '', '', '', '', '', '', ''];
     const currentPlayer = 'X';
-    let winner = false // dummy data
+    let winner = false;
 
     function resetGame() {
-        this.gameBoard = ['', '', '', '', '', '', '', '', '']
+        this.gameBoard = ['', '', '', '', '', '', '', '', ''];
+        this.currentPlayer = 'X';
+        this.winner = false;
     }
 
     function checkWinner() {
-        // TODO Need to analyze the array if there is a winner then congratulate it somehow
-        return winner
+        //@formatter:off
+        const winCombinations = {
+            horizontalTop:       [this.gameBoard[0], this.gameBoard[1], this.gameBoard[2]],
+            horizontalBottom:    [this.gameBoard[6], this.gameBoard[7], this.gameBoard[8]],
+            verticalLeft:        [this.gameBoard[0], this.gameBoard[3], this.gameBoard[6]],
+            verticalRight:       [this.gameBoard[2], this.gameBoard[5], this.gameBoard[8]],
+            diagonalLeftToRight: [this.gameBoard[0], this.gameBoard[4], this.gameBoard[8]],
+            diagonalRightToLeft: [this.gameBoard[2], this.gameBoard[4], this.gameBoard[6]],
+            middleVertical:      [this.gameBoard[1], this.gameBoard[4], this.gameBoard[7]],
+            middleHorizontal:    [this.gameBoard[3], this.gameBoard[4], this.gameBoard[5]],
+        }
+        //@formatter:on
+
+        // determine winner flag value if a set created from a combination contains only X or O, then the row is a winner's one
+        for (let combination in winCombinations) {
+            let set = new Set(winCombinations[combination]);
+            if (set.has('')) {  // guard, as set of  '' and 'X' counts as .size === 2
+            } else if (set.size < 2) {
+                this.winner = true
+            }
+        }
+        return this.winner
     }
 
     function changePlayer() {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     }
 
-    return {gameBoard, resetGame, currentPlayer, checkWinner, changePlayer};
+    function updateGameBoard(index) {
+        this.gameBoard[index] = this.currentPlayer
+    }
+
+    return {
+        gameBoard,
+        resetGame,
+        currentPlayer,
+        checkWinner,
+        changePlayer,
+        updateGameBoard,
+        winner
+    };
 }();
 
-/* TODO
-    1. Responsive Buttons
-    * Click on a button should change it's value corresponding to the player.
-    * Reflect changes in gameController.gameBoard
-    + Each click should trigger gameController.checkWinner()
-    2. Determine a winner.
-    - When you get a row, then you're the winner.
-    - reset should set winner value to false
-    3. Proclaim a winner
-    + if .checkWinner is not true call screenController.updateWinner() and .changePlayer()
 
-
- */
 
 
 
