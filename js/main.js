@@ -24,15 +24,16 @@ const screenController = function () {
         gameButton.setAttribute(`data-index`, `${buttonIndex}`);
         gameButton.addEventListener('click', (e) => {
 
-            if (gameController.winner !== true) {
-                gameController.updateGameBoard(Number(e.currentTarget.dataset.index));
-                if (gameController.checkWinner()) {
-                    screenController.updateScreen();
-                    screenController.declareWinner();
-                } else {
-                    gameController.changePlayer();
-                    screenController.updatePlayer();
-                    screenController.updateScreen();
+            if (gameController.winner !== true) { // prohibit further clicks if there is the winner declared
+                if (gameController.updateGameBoard(Number(e.currentTarget.dataset.index))) { //check legitimacy
+                    if (gameController.checkWinner()) {
+                        screenController.updateScreen();
+                        screenController.declareWinner();
+                    } else {
+                        gameController.changePlayer();
+                        screenController.updatePlayer();
+                        screenController.updateScreen();
+                    }
                 }
             }
         })
@@ -40,11 +41,23 @@ const screenController = function () {
         buttonContainer.appendChild(gameButton);
     }
 
+    function declareTie() {
+        // const playerContainer = document.querySelector('.player-container')
+        // playerContainer.replaceChildren()
+        // TODO
+
+    }
+
+    function resetPlayerContainer() {
+        // TODO
+    }
+
     function declareWinner() {
         const winnerDiv = document.createElement('div');
         winnerDiv.textContent = `the winner is ${gameController.currentPlayer}`;
         currentContainerSpan.textContent = `${gameController.currentPlayer} is the winner! `;
     }
+
 
     const updatePlayer = () => {
         currentContainerSpan.textContent = gameController.currentPlayer
@@ -54,7 +67,7 @@ const screenController = function () {
         renderManyButtons();
         updatePlayer();
     }
-    return {updateScreen, updatePlayer, declareWinner};
+    return {updateScreen, updatePlayer, declareWinner, declareTie};
 }();
 
 const gameController = function () {
@@ -66,6 +79,10 @@ const gameController = function () {
         this.gameBoard = ['', '', '', '', '', '', '', '', ''];
         this.currentPlayer = 'X';
         this.winner = false;
+    }
+
+    function checkTie() {
+        // TODO
     }
 
     function checkWinner() {
@@ -98,7 +115,12 @@ const gameController = function () {
     }
 
     function updateGameBoard(index) {
-        this.gameBoard[index] = this.currentPlayer
+        if (this.gameBoard[index] === '') {
+            this.gameBoard[index] = this.currentPlayer
+
+            return true // legitimate
+        }
+        return false // move was illegitimate (e.g. clicked on a cell that already got a value)
     }
 
     return {
